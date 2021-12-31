@@ -1,0 +1,27 @@
+name: Github actions CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        run: make install-dev
+      - name: Install pre-commit
+        run: make install-pre-commit
+      - name: Run pre-commit
+        run: make run-pre-commit
+      - name: Test with pytest
+        run: make test
