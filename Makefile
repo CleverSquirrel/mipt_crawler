@@ -1,8 +1,7 @@
-REQUIREMENTS_DEV="requirements-dev.txt"
 REQUIREMENTS="requirements.txt"
-PACKAGE_NAME="import_monster"
+PACKAGE_NAME="mipt_crawler"
 
-all: install black isort flake8 test clean
+all: install black isort flake8 clean
 
 black:
 	@black ${PACKAGE_NAME}
@@ -38,11 +37,7 @@ install: uninstall
 	@pip install -r ${REQUIREMENTS}
 	@echo "Done"
 
-install-dev: uninstall
-	@pip install -r ${REQUIREMENTS_DEV}
-	@pip install -e .
-
-install-all: install install-dev install-pre-commit
+install-all: install install-pre-commit
 
 install-pre-commit:
 	@pre-commit install
@@ -50,7 +45,4 @@ install-pre-commit:
 run-pre-commit:
 	@pre-commit run --all-files
 
-test:
-	@py.test tests
-
-.PHONY: all black isort flake8 install install-dev install-all uninstall clean test
+.PHONY: all black isort flake8 install install-all uninstall clean
