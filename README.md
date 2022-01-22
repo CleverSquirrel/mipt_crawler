@@ -1,4 +1,5 @@
-'''
-scrapy crawl DigitalOceanSpider -O do_links.json
-'''
+```(bash)
+docker build -t mipt_crawler .
+docker run mipt_crawler
+```
 
