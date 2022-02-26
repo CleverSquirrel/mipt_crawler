@@ -1,8 +1,10 @@
-import scrapy
+# import scrapy
+from scrapy import Spider
 
 
-class DOSpider(scrapy.Spider):
+class DOSpider(Spider):
     name = "DigitalOceanSpider"
+    allowed_domains = ["https://www.digitalocean.com/"]
     start_urls = [
         # "https://www.digitalocean.com/community/tutorials/how-to-use-break-continue-and-pass-statements-when-working-with-loops-in-python-3"
         "https://www.digitalocean.com/community/tutorials"
@@ -16,12 +18,15 @@ class DOSpider(scrapy.Spider):
             for tutorial in response.css(TUTORIAL_SELECTOR):
                 TITLE_SELECTOR = ".tutorial h3 a::text"
                 URL_SELECTOR = ".tutorial h3 a::attr(href)"
+
+                title = tutorial.css(TITLE_SELECTOR).extract_first().strip()
+                url = tutorial.css(URL_SELECTOR).extract_first()
+
                 yield {
-                    "title": tutorial.css(TITLE_SELECTOR).extract_first().strip(),
-                    "url": tutorial.css(URL_SELECTOR).extract_first(),
+                    "title": title,
+                    "url": url,
                 }
                 yield from response.follow_all(css=URL_SELECTOR, callback=self.parse)
-
                 yield from response.follow_all(css=".tutorial h3 a", callback=self.parse)
         elif response.css(FEATURED_ITEM_SELECTOR):
             yield {"url": response.css(FEATURED_ITEM_SELECTOR).extract_first()}

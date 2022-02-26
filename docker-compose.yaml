@@ -12,8 +12,9 @@ services:
 
   mipt_crawler:
     build: .
-    ports:
-      - 8000:5000
+    volumes:
+      - mipt_crawler_data_container:/results
 
 volumes:
   mongodb_data_container:
+  mipt_crawler_data_container:
