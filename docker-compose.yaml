@@ -9,12 +9,14 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+    # command: mongod --smallfiles --logpath=/dev/null
 
   mipt_crawler:
-    build: .
+    build: ./Dockerfile
     volumes:
-      - mipt_crawler_data_container:/results
+      - ./src:/app
+    depends_on:
+      - db
 
 volumes:
   mongodb_data_container:
-  mipt_crawler_data_container:

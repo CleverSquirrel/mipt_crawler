@@ -7,6 +7,6 @@
 from scrapy.item import Field, Item
 
 
-class DocrawlerItem(Item):
-    title = Field()
-    url = Field()
+class QuotesbotItem(Item):
+    text = Field()
+    author = Field()

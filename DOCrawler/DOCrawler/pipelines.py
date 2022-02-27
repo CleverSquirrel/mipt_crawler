@@ -6,6 +6,8 @@
 
 # from multiprocessing import connection
 
+import logging
+
 import pymongo
 
 # useful for handling different item types with a single interface
@@ -15,7 +17,7 @@ from scrapy.exceptions import DropItem
 
 class MongoDBPipeline:
 
-    collection_name = "articles"
+    collection_name = "quotes"
 
     def __init__(self, mongo_server, mongo_port, mongo_db):
         self.mongo_server = mongo_server
@@ -33,11 +35,17 @@ class MongoDBPipeline:
 
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_server, self.mongo_port)
-        self.db = self.client[self.mongo_db]
+        dbnames = self.client.list_database_names()
+        if self.mongo_db not in dbnames:
+            self.db = self.client[self.mongo_db]
+        else:
+            self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
+        if self.db:
+            self.db[self.collection_name].insert(dict(item))
+        logging.debug("Post added to MongoDB")
         return item
