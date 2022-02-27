@@ -6,7 +6,7 @@ from DOCrawler.items import QuotesbotItem
 
 
 class DOSpider(scrapy.Spider):
-    name = "toscrape-css"
+    name = "toscrape"
     start_urls = [
         "http://quotes.toscrape.com/",
     ]
