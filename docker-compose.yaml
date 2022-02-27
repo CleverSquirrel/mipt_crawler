@@ -19,7 +19,7 @@ services:
     volumes:
       - ./src:/app
     depends_on:
-      - db
+      - mongodb_container
 
 volumes:
   mongodb_data_container:
