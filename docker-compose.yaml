@@ -12,7 +12,10 @@ services:
     # command: mongod --smallfiles --logpath=/dev/null
 
   mipt_crawler:
-    build: ./Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mipt_crawler
     volumes:
       - ./src:/app
     depends_on:
